@@ -10,12 +10,20 @@ class Order extends CI_Controller {
         $this->load->helper(['url','form']);
     }
     
-    public function view_create_order()
+    public function view_create_order($room_number)
 	{
+        $data['room_number'] = $room_number;
 		$this->load->view('templates/header');
-		$this->load->view('create_order');
+		$this->load->view('create_order', $data);
 		$this->load->view('templates/footer');	
 	}
+
+    public function view_thank_you()
+    {
+        $this->load->view('templates/header');
+		$this->load->view('thank_you');
+		$this->load->view('templates/footer');
+    }
 
 	public function view_list_order()
 	{
@@ -55,7 +63,7 @@ class Order extends CI_Controller {
         $new_order = $this->Order_Model->create_new_order($data);
 
         // Redirect to the 'order' page after order creation
-        redirect('order');
+        redirect('/thank-you');
     }
 	}
 

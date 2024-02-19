@@ -53,6 +53,7 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['order'] = 'order/view_create_order';
+$route['order/(:num)'] = 'order/view_create_order/$1';
 $route['order/create'] ='order/create_order';
+$route['thank-you'] = 'order/view_thank_you';
 $route['list-order'] = 'order/view_list_order';

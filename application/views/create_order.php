@@ -6,6 +6,11 @@
         <div class="card-body">
             <form action="<?php echo base_url('order/create'); ?>" method="post">
                 <div class="form-group mb-3">
+                    <label for="room" style="color: #27005D;">Room *</label>
+                    <input type="number" class="form-control" id="room" style="background-color: #E4F1FF;" name="room"
+                        value="<?php echo isset($room_number) ? $room_number : 1; ?>" readonly>
+                </div>
+                <div class="form-group mb-3">
                     <label for="name" style="color: #27005D;">Name *</label>
                     <input type="text" class="form-control" id="name" style="background-color: #E4F1FF;" name="name"
                         placeholder="Name">
