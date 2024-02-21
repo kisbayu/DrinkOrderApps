@@ -2,6 +2,35 @@
 
 class Order_Model extends CI_model
 {
+    public function __construct() {
+        parent::__construct();
+        $this->load->database();
+    }
+
+    public function record_count() {
+        return $this->db->count_all("orders");
+    }
+
+    public function fetch_orders($limit, $start) {
+        $this->db->limit($limit, $start);
+        $query = $this->db->get("orders");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+        return false;
+    }
+
+    public function search_orders($keyword) {
+        $this->db->like('name', $keyword);
+        $this->db->or_like('room', $keyword);
+        // Add more fields for searching if needed
+        $query = $this->db->get("orders");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+        return false;
+    }
+
     public function get_all_order(){
         $this->db->order_by('created_at','ASC');
         $this->db->where('is_finished !=', false);

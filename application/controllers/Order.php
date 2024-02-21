@@ -6,7 +6,8 @@ class Order extends CI_Controller {
     public function __construct(){        
         parent::__construct();
         $this->load->model('Order_Model');
-        $this->load->library('form_validation');   
+        $this->load->library('form_validation');
+        $this->load->library('pagination');  
         $this->load->helper(['url','form']);
     }
     
@@ -27,9 +28,23 @@ class Order extends CI_Controller {
 
 	public function view_list_order()
 	{
-		$this->load->view('templates/header');
-		$this->load->view('list_order');
-		$this->load->view('templates/footer');	
+		$config = array();
+        $config["base_url"] = base_url() . "list-order";
+        $config["total_rows"] = $this->Order_Model->record_count();
+        $config["per_page"] = 5;
+        $config["uri_segment"] = 3;
+        $config['use_page_numbers'] = TRUE;
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data["links"] = $this->pagination->create_links();
+
+        // Fetch orders
+        $data['orders'] = $this->Order_Model->fetch_orders($config["per_page"], $page);
+
+        // Load view
+        $this->load->view('list_order', $data);
 	}
 
 	public function create_order()
@@ -43,7 +58,7 @@ class Order extends CI_Controller {
     } else {
         $data = array(
             'name' => $this->input->post('name'),
-            'room' => 1,
+            'room' => $this->input->post('room'),
             'menu_mineral_water_qty' => $this->input->post('menu_mineral_water_qty'),
             'menu_cold_sweet_tea_qty' => $this->input->post('menu_cold_sweet_tea_qty'),
             'menu_hot_sweet_tea_qty' => $this->input->post('menu_hot_sweet_tea_qty'),
