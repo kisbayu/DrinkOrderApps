@@ -1,8 +1,6 @@
 <div class="container">
     <div class="card" style="background-color: #AED2FF; margin-top:5rem">
-        <div class="card-header" style="background-color: #A9CBF7;">
-            <!-- <h5 class="card-title" style="color: #27005D;">Beverages Order</h5> -->
-        </div>
+
         <div class="card-body">
             <form action="<?php echo base_url('order/create'); ?>" method="post">
                 <div class="form-group mb-3">

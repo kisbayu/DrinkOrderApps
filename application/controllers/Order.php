@@ -26,27 +26,6 @@ class Order extends CI_Controller {
 		$this->load->view('templates/footer');
     }
 
-	public function view_list_order()
-	{
-		$config = array();
-        $config["base_url"] = base_url() . "list-order";
-        $config["total_rows"] = $this->Order_Model->record_count();
-        $config["per_page"] = 5;
-        $config["uri_segment"] = 3;
-        $config['use_page_numbers'] = TRUE;
-
-        $this->pagination->initialize($config);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data["links"] = $this->pagination->create_links();
-
-        // Fetch orders
-        $data['orders'] = $this->Order_Model->fetch_orders($config["per_page"], $page);
-
-        // Load view
-        $this->load->view('list_order', $data);
-	}
-
 	public function create_order()
 	{
     $this->form_validation->set_rules('name', 'name', 'required');
@@ -81,5 +60,36 @@ class Order extends CI_Controller {
         redirect('/thank-you');
     }
 	}
+
+    public function view_list_order(){
+        $this->load->model('Order_Model','Order_Model');
+        $this->load->library('pagination');
+        
+        $config['base_url'] = base_url().'Order/view_list_order/';
+        $config['total_rows'] = $this->Order_Model->count_order_rows();
+        $config['per_page'] = 7;
+
+        $this->pagination->initialize($config);
+
+        $data['start'] = $this->uri->segment(3); 
+        $data['orders'] = $this->Order_Model->get_order($config['per_page'], $data['start']);
+        
+        $this->load->view('templates/header');
+		$this->load->view('list_order', $data);
+		$this->load->view('templates/footer');
+    }
+
+    public function finishOrder($order_id) {
+    $this->load->model('Order_Model'); // Assuming your model is called OrderModel
+    $result = $this->Order_Model->finishOrderById($order_id);
+
+    if ($result) {
+        // Optionally, set a flash message here to indicate success
+        redirect(base_url().'Order/view_list_order/'); // Adjust this to the URL/path of your orders list
+    } else {
+        // Handle the error, e.g., set a flash message indicating failure
+        redirect('/asadsda');
+    }
+}
 
 }
