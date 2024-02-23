@@ -9,6 +9,7 @@ class Order extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('pagination');  
         $this->load->helper(['url','form']);
+        $this->load->library('session');
     }
     
     public function view_create_order($room_number)
@@ -28,7 +29,10 @@ class Order extends CI_Controller {
 
 	public function create_order()
 	{
-    $this->form_validation->set_rules('name', 'name', 'required');
+    $this->load->library('form_validation');
+    $this->form_validation->set_rules('room', 'room', 'required');
+
+    $data['room'] = $this->input->post('room');
 
     if ($this->form_validation->run() === FALSE) {
         $this->load->view('templates/header');
@@ -47,7 +51,15 @@ class Order extends CI_Controller {
             'menu_hot_cream_coffee_qty' => $this->input->post('menu_hot_cream_coffee_qty'),
             'menu_cold_ocha_qty' => $this->input->post('menu_cold_ocha_qty'),
             'menu_hot_ocha_qty' => $this->input->post('menu_hot_ocha_qty'),
-            'notes' => $this->input->post('notes')
+            'menu_mineral_water_notes' => $this->input->post('notes_menu_mineral_water_qty'),
+            'menu_cold_sweet_tea_notes' => $this->input->post('notes_menu_cold_sweet_tea_qty'),
+            'menu_hot_sweet_tea_notes' => $this->input->post('notes_menu_hot_sweet_tea_qty'),
+            'menu_cold_black_coffee_notes' => $this->input->post('notes_menu_cold_black_coffee_qty'),
+            'menu_hot_black_coffee_notes'  => $this->input->post('notes_menu_hot_black_coffee_qty'),
+            'menu_cold_cream_coffee_notes' => $this->input->post('notes_menu_cold_cream_coffee_qty'),
+            'menu_hot_cream_coffee_notes' => $this->input->post('notes_menu_hot_cream_coffee_qty'),
+            'menu_cold_ocha_notes' => $this->input->post('notes_menu_cold_ocha_qty'),
+            'menu_hot_ocha_notes' => $this->input->post('notes_menu_hot_ocha_qty')
         );
 
         // Load the model
@@ -68,6 +80,26 @@ class Order extends CI_Controller {
         $config['base_url'] = base_url().'Order/view_list_order/';
         $config['total_rows'] = $this->Order_Model->count_order_rows();
         $config['per_page'] = 7;
+
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
 
         $this->pagination->initialize($config);
 

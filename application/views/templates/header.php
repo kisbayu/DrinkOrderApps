@@ -14,4 +14,10 @@
     <title>Beverages Order</title>
 </head>
 
-<body style="background-color: #E4F1FF;">
+<body style="background-color: #F0F3FF;">
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #FEFEFE;">
+        <div class="container justify-content-center">
+            <img src="<?= base_url('/public/asahimasPNG.png'); ?>" class="img" alt="logo" style="height: 8vh;">
+        </div>
+    </nav>

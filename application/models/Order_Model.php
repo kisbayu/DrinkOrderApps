@@ -9,19 +9,23 @@ class Order_Model extends CI_model
 
 
     public function get_all_order(){
-        $this->db->order_by('created_at','ASC');
+        $this->db->order_by('created_at','DESC');
         $this->db->where('is_finished =', false);
         $query = $this->db->get('orders');
 
         return $query->result_array();
     }
 
-    public function get_order($limit, $start){
-        return $this->db->get('orders',$limit,$start)->result_array();
+    public function get_order($limit, $start) {
+    $this->db->where('is_finished', false);
+    $this->db->order_by('created_at', 'DESC');
+    return $this->db->get('orders', $limit, $start)->result_array();
     }
 
+
     public function count_order_rows(){
-        return $this->db->get('orders')->num_rows();
+        $this->db->where('is_finished', false);
+        return $this->db->count_all_results('orders');
     }
 
     public function create_new_order($data){
