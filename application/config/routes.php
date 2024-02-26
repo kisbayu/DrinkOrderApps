@@ -52,3 +52,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['order/(:num)'] = 'order/view_create_order/$1';
+$route['order/create'] ='order/create_order';
+$route['thank-you'] = 'order/view_thank_you';
+$route['list-order'] = 'order/view_list_order';
+$route['finish_order/(:num)'] = 'order/finishOrder/$1';
